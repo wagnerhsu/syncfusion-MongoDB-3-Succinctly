@@ -9,14 +9,14 @@ namespace ConsoleQueryData
     public class ConsoleQueryDataHostedService : IHostedService
     {
         private readonly IAbpApplicationWithExternalServiceProvider _application;
-        private readonly IServiceProvider _serviceProvider;
         private readonly QueryBsonDoc _queryBsonDoc;
+        private readonly IServiceProvider _serviceProvider;
 
         public ConsoleQueryDataHostedService(
             IAbpApplicationWithExternalServiceProvider application,
             IServiceProvider serviceProvider,
             QueryBsonDoc queryBsonDoc
-            )
+        )
         {
             _application = application;
             _serviceProvider = serviceProvider;

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Serilog;
-using Serilog.Events;
+using NLog;
+using NLogWrapper;
 
 namespace ConsoleQueryData
 {
@@ -12,21 +11,11 @@ namespace ConsoleQueryData
     {
         public static async Task<int> Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration()
-#if DEBUG
-                .MinimumLevel.Debug()
-#else
-                .MinimumLevel.Information()
-#endif
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                .Enrich.FromLogContext()
-                .WriteTo.Async(c => c.File("Logs/logs.txt"))
-                .WriteTo.Async(c => c.Console())
-                .CreateLogger();
-
+            NLogServiceNoConfigFile.BuildLogingConfiguration(new NLogOptions());
+            var Log = LogManager.GetCurrentClassLogger();
             try
             {
-                Log.Information("Starting console host.");
+                Log.Info("Starting console host.");
                 await CreateHostBuilder(args).RunConsoleAsync();
                 return 0;
             }
@@ -37,22 +26,20 @@ namespace ConsoleQueryData
             }
             finally
             {
-                Log.CloseAndFlush();
+                LogManager.Shutdown();
             }
-
         }
 
-        internal static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        internal static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
                 .UseAutofac()
-                .UseSerilog()
+                .ConfigureLogging(NLogServiceNoConfigFile.ConfigureLogging)
                 .ConfigureAppConfiguration((context, config) =>
                 {
                     //setup your additional configuration sources
                 })
-                .ConfigureServices((hostContext, services) =>
-                {
-                    services.AddApplication<ConsoleQueryDataModule>();
-                });
+                .ConfigureServices((hostContext, services) => { services.AddApplication<ConsoleQueryDataModule>(); });
+        }
     }
 }

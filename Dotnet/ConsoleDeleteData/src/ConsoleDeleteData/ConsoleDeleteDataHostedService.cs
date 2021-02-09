@@ -4,34 +4,30 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Volo.Abp;
 
-namespace ConsoleInsertData
+namespace ConsoleDeleteData
 {
-    public class ConsoleInsertDataHostedService : IHostedService
+    public class ConsoleDeleteDataHostedService : IHostedService
     {
         private readonly IAbpApplicationWithExternalServiceProvider _application;
-        private readonly InsertBsonDoc _insertBsonDoc;
-        private readonly InsertMovieDb _insertMovieDb;
         private readonly IServiceProvider _serviceProvider;
+        private readonly DeleteDataWithBsonMapper _deleteDataWithBsonMapper;
 
-        public ConsoleInsertDataHostedService(
+        public ConsoleDeleteDataHostedService(
             IAbpApplicationWithExternalServiceProvider application,
             IServiceProvider serviceProvider,
-            InsertBsonDoc insertBsonDoc,
-            InsertMovieDb insertMovieDb
-        )
+            DeleteDataWithBsonMapper deleteDataWithBsonMapper
+            )
         {
             _application = application;
             _serviceProvider = serviceProvider;
-            _insertBsonDoc = insertBsonDoc;
-            _insertMovieDb = insertMovieDb;
+            _deleteDataWithBsonMapper = deleteDataWithBsonMapper;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             _application.Initialize(_serviceProvider);
-            await _insertBsonDoc.RunAsync();
-            await _insertMovieDb.RunAsync();
-            await Task.CompletedTask;
+
+            await _deleteDataWithBsonMapper.RunAsync();
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

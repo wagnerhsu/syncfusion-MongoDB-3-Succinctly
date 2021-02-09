@@ -5,7 +5,6 @@ using Volo.Abp.Modularity;
 
 namespace ConsoleInsertData
 {
-
     [DependsOn(
         typeof(AbpAutofacModule)
     )]

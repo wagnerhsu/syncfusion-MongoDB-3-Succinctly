@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using NLog;
 using NLogWrapper;
 
-namespace ConsoleInsertData
+namespace ConsoleDeleteData
 {
     public class Program
     {
@@ -34,12 +34,12 @@ namespace ConsoleInsertData
         {
             return Host.CreateDefaultBuilder(args)
                 .UseAutofac()
-                .ConfigureLogging(options => NLogServiceNoConfigFile.ConfigureLogging(options))
+                .ConfigureLogging(NLogServiceNoConfigFile.ConfigureLogging)
                 .ConfigureAppConfiguration((context, config) =>
                 {
                     //setup your additional configuration sources
                 })
-                .ConfigureServices((hostContext, services) => { services.AddApplication<ConsoleInsertDataModule>(); });
+                .ConfigureServices((hostContext, services) => { services.AddApplication<ConsoleDeleteDataModule>(); });
         }
     }
 }

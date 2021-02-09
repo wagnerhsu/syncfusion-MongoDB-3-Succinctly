@@ -3,19 +3,19 @@ using Microsoft.Extensions.Hosting;
 using Volo.Abp.Autofac;
 using Volo.Abp.Modularity;
 
-namespace ConsoleQueryData
+namespace ConsoleDeleteData
 {
     [DependsOn(
         typeof(AbpAutofacModule)
     )]
-    public class ConsoleQueryDataModule : AbpModule
+    public class ConsoleDeleteDataModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             var configuration = context.Services.GetConfiguration();
             var hostEnvironment = context.Services.GetSingletonInstance<IHostEnvironment>();
 
-            context.Services.AddHostedService<ConsoleQueryDataHostedService>();
+            context.Services.AddHostedService<ConsoleDeleteDataHostedService>();
         }
     }
 }

@@ -16,13 +16,14 @@ namespace ConsoleQueryData
         {
             _logger = logger;
         }
+
         public async Task RunAsync()
         {
-            MongoDbWrapper wrapper = new MongoDbWrapper("mongodb://localhost:27017");
-            wrapper.GetDatabase("foo");
-            var collection = wrapper.GetCollection("bar");
+            var wrapper = new MongoDbWrapper(MongoDbConsts.LocalMongoDbConnectionString);
+            wrapper.GetDatabase(MongoDbConsts.MoviesDb.DatabaseName);
+            var collection = wrapper.GetCollection(MongoDbConsts.MoviesDb.MoviesBsonCollection);
             var result = collection.Find(new BsonDocument());
-            await result.ForEachAsync(d => _logger.LogDebug(JsonConvert.SerializeObject(result)));
+            await result.ForEachAsync(d => _logger.LogDebug(d.ToJson()));
         }
     }
 }

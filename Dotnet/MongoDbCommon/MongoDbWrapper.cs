@@ -23,5 +23,10 @@ namespace MongoDbCommon
         {
             return _database.GetCollection<BsonDocument>(name);
         }
+
+        public IMongoCollection<T> GetCollection<T>(string name)
+        {
+            return _database.GetCollection<T>(name);
+        }
     }
 }
