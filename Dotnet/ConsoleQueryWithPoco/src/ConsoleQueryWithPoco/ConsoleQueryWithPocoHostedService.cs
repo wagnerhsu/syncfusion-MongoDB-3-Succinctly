@@ -4,33 +4,30 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Volo.Abp;
 
-namespace ConsoleQueryData
+namespace ConsoleQueryWithCoco
 {
-    public class ConsoleQueryDataHostedService : IHostedService
+    public class ConsoleQueryWithPocoHostedService : IHostedService
     {
         private readonly IAbpApplicationWithExternalServiceProvider _application;
-        private readonly QueryBsonDoc _queryBsonDoc;
-        private readonly QueryWithLinq _queryWithLinq;
         private readonly IServiceProvider _serviceProvider;
+        private readonly HelloWorldService _helloWorldService;
 
-        public ConsoleQueryDataHostedService(
+        public ConsoleQueryWithPocoHostedService(
             IAbpApplicationWithExternalServiceProvider application,
             IServiceProvider serviceProvider,
-            QueryBsonDoc queryBsonDoc, QueryWithLinq queryWithLinq
-        )
+            HelloWorldService helloWorldService)
         {
             _application = application;
             _serviceProvider = serviceProvider;
-            _queryBsonDoc = queryBsonDoc;
-            _queryWithLinq = queryWithLinq;
+            _helloWorldService = helloWorldService;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             _application.Initialize(_serviceProvider);
-            await _queryBsonDoc.RunAsync();
-            await _queryWithLinq.RunAsync();
-            await Task.CompletedTask;
+
+            await _helloWorldService.RunAsync();
+
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

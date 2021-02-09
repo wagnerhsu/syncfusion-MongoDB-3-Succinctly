@@ -28,7 +28,7 @@ BsonDocument sevenSamurai = new BsonDocument()
     },
     {"year", 1954}
 };
-``
+```
 
 ## Mongo Shell
 - Access a mongoDb server

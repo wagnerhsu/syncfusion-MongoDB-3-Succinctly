@@ -8,6 +8,7 @@
         {
             public const string DatabaseName = "moviesDb";
             public const string MoviesBsonCollection = "movies_bson";
+            public const string MoviesPocoCollection = "movies_poco";
         }
     }
 }
